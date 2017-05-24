@@ -46,4 +46,14 @@ public class Done_PlayerController : MonoBehaviour
 		
 		GetComponent<Rigidbody>().rotation = Quaternion.Euler (0.0f, 0.0f, GetComponent<Rigidbody>().velocity.x * -tilt);
 	}
+
+    void useSecondaryWeapon()
+    {
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Ennemy");
+
+        for (var i = 0; i < gameObjects.Length; i++)
+        {
+            Destroy(gameObjects[i]);
+        }
+    }
 }
