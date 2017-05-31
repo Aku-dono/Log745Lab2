@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Done_GameController : MonoBehaviour
 {
@@ -13,10 +14,17 @@ public class Done_GameController : MonoBehaviour
 	public GUIText scoreText;
 	public GUIText restartText;
 	public GUIText gameOverText;
-	
-	private bool gameOver;
+
+    public Image FirstBar;
+    public Image SecondBar;
+    public Image ThirdBar;
+    public Image FourthBar;
+    public Image FifthBar;
+
+    private bool gameOver;
 	private bool restart;
 	private int score;
+    private int weaponCharge;
 	
 	void Start ()
 	{
@@ -25,7 +33,8 @@ public class Done_GameController : MonoBehaviour
 		restartText.text = "";
 		gameOverText.text = "";
 		score = 0;
-		UpdateScore ();
+		UpdateScore();
+        updateChargeBar();
 		StartCoroutine (SpawnWaves ());
 	}
 	
@@ -63,6 +72,42 @@ public class Done_GameController : MonoBehaviour
 			}
 		}
 	}
+
+    void updateChargeBar()
+    {
+        if (weaponCharge < 20)
+        {
+            FirstBar.color = new Color(0, 0, 0, 0);
+            SecondBar.color = new Color(0, 0, 0, 0);
+            ThirdBar.color = new Color(0, 0, 0, 0);
+            FourthBar.color = new Color(0, 0, 0, 0);
+            FifthBar.color = new Color(0, 0, 0, 0);
+        }
+        else if (weaponCharge < 40)
+        {
+            FirstBar.color = Color.green;
+        }
+        else if (weaponCharge < 60)
+        {
+            SecondBar.color = Color.green;
+        }
+        else if (weaponCharge < 80)
+        {
+            ThirdBar.color = Color.green;
+        }
+        else if (weaponCharge < 100)
+        {
+            FourthBar.color = Color.green;
+        }
+        else
+        {
+            FirstBar.color = Color.red;
+            SecondBar.color = Color.red;
+            ThirdBar.color = Color.red;
+            FourthBar.color = Color.red;
+            FifthBar.color = Color.red;
+        }
+    }
 	
 	public void AddScore (int newScoreValue)
 	{
@@ -80,4 +125,24 @@ public class Done_GameController : MonoBehaviour
 		gameOverText.text = "Game Over!";
 		gameOver = true;
 	}
+
+    public void addCharge(int value)
+    {
+        if (weaponCharge < 100)
+        {
+            weaponCharge += value;
+        }
+        updateChargeBar();
+    }
+
+    public int getCharge()
+    {
+        return weaponCharge;
+    }
+
+    public void resetCharge()
+    {
+        weaponCharge = 0;
+        updateChargeBar();
+    }
 }
