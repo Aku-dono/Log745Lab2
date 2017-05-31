@@ -18,8 +18,14 @@ public class Done_PlayerController : MonoBehaviour
 	public float fireRate;
 	 
 	private float nextFire;
-	
-	void Update ()
+    private Quaternion calibrationQuaternion;
+
+    void Start()
+    {
+        CalibrateAccelerometer();
+    }
+
+    void Update ()
 	{
 		if (Input.GetButton("Fire1") && Time.time > nextFire) 
 		{
@@ -36,7 +42,9 @@ public class Done_PlayerController : MonoBehaviour
 
         //Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 
-        Vector3 acceleration = Input.acceleration;
+        Vector3 accelerationRaw = Input.acceleration;
+        Vector3 acceleration = FixAcceleration(accelerationRaw);
+
         Vector3 movement = new Vector3(acceleration.x, 0.0f, acceleration.y);
         GetComponent<Rigidbody>().velocity = movement * speed;
 		
@@ -49,4 +57,19 @@ public class Done_PlayerController : MonoBehaviour
 		
 		GetComponent<Rigidbody>().rotation = Quaternion.Euler (0.0f, 0.0f, GetComponent<Rigidbody>().velocity.x * -tilt);
 	}
+
+    //Used to calibrate the Iput.acceleration input
+    void CalibrateAccelerometer()
+    {
+        Vector3 accelerationSnapshot = Input.acceleration;
+        Quaternion rotateQuaternion = Quaternion.FromToRotation(new Vector3(0.0f, 0.0f, -1.0f), accelerationSnapshot);
+        calibrationQuaternion = Quaternion.Inverse(rotateQuaternion);
+    }
+
+    //Get the 'calibrated' value from the Input
+    Vector3 FixAcceleration(Vector3 acceleration)
+    {
+        Vector3 fixedAcceleration = calibrationQuaternion * acceleration;
+        return fixedAcceleration;
+    }
 }
