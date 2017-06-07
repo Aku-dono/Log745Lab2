@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SecondaryWeapon : MonoBehaviour {
 
-    public Button button;
+    //public Button button;
         
     private Done_GameController gameController;
 
@@ -22,11 +22,11 @@ public class SecondaryWeapon : MonoBehaviour {
             Debug.Log("Cannot find 'GameController' script");
         }
 
-        var btn = button.GetComponent<Button>();
-        btn.onClick.AddListener(WipeEnemies);
+        //var btn = button.GetComponent<Button>();
+        //btn.onClick.AddListener(WipeEnemies);
 	}
 
-    void WipeEnemies()
+    public void WipeEnemies()
     {
         if (gameController.getCharge() >= 100 && !gameController.isGameOver())
         {

@@ -16,12 +16,20 @@ public class Done_PlayerController : MonoBehaviour
 	public GameObject shot;
 	public Transform shotSpawn;
 	public float fireRate;
-	 
+    public SimpleTouchPad touchPad;
+    public SimpleTouchAreaButton areaButton; 
+
 	private float nextFire;
-	
-	void Update ()
+    private Quaternion calibrationQuaternion;
+
+    void Start()
+    {
+        CalibrateAccelerometer();
+    }
+
+    void Update ()
 	{
-		if (Input.GetButton("Fire1") && Time.time > nextFire) 
+		if (areaButton.CanFire() && Time.time > nextFire) 
 		{
 			nextFire = Time.time + fireRate;
 			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
@@ -31,11 +39,18 @@ public class Done_PlayerController : MonoBehaviour
 
 	void FixedUpdate ()
 	{
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		float moveVertical = Input.GetAxis ("Vertical");
+        //float moveHorizontal = Input.GetAxis ("Horizontal");
+        //float moveVertical = Input.GetAxis ("Vertical");
 
-		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
-		GetComponent<Rigidbody>().velocity = movement * speed;
+        //Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
+
+        //Vector3 accelerationRaw = Input.acceleration;
+        //Vector3 acceleration = FixAcceleration(accelerationRaw);
+        //Vector3 movement = new Vector3(acceleration.x, 0.0f, acceleration.y);
+
+        Vector2 direction = touchPad.GetDirection();
+        Vector3 movement = new Vector3(direction.x, 0.0f, direction.y);
+        GetComponent<Rigidbody>().velocity = movement * speed;
 		
 		GetComponent<Rigidbody>().position = new Vector3
 		(
@@ -46,4 +61,19 @@ public class Done_PlayerController : MonoBehaviour
 		
 		GetComponent<Rigidbody>().rotation = Quaternion.Euler (0.0f, 0.0f, GetComponent<Rigidbody>().velocity.x * -tilt);
 	}
+
+    //Used to calibrate the Iput.acceleration input
+    void CalibrateAccelerometer()
+    {
+        Vector3 accelerationSnapshot = Input.acceleration;
+        Quaternion rotateQuaternion = Quaternion.FromToRotation(new Vector3(0.0f, 0.0f, -1.0f), accelerationSnapshot);
+        calibrationQuaternion = Quaternion.Inverse(rotateQuaternion);
+    }
+
+    //Get the 'calibrated' value from the Input
+    Vector3 FixAcceleration(Vector3 acceleration)
+    {
+        Vector3 fixedAcceleration = calibrationQuaternion * acceleration;
+        return fixedAcceleration;
+    }
 }
