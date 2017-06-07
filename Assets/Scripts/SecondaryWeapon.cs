@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 public class SecondaryWeapon : MonoBehaviour {
 
-    public Button button;
-    public GameObject enemyExplosion;
-    public int scoreValue;
+    //public Button button;
         
     private Done_GameController gameController;
 
@@ -24,28 +22,37 @@ public class SecondaryWeapon : MonoBehaviour {
             Debug.Log("Cannot find 'GameController' script");
         }
 
-        var btn = button.GetComponent<Button>();
-        btn.onClick.AddListener(WipeEnemies);
+        //var btn = button.GetComponent<Button>();
+        //btn.onClick.AddListener(WipeEnemies);
 	}
 
-    void WipeEnemies()
+    public void WipeEnemies()
     {
-        if (gameController.getCharge() >= 100)
+        if (gameController.getCharge() >= 100 && !gameController.isGameOver())
         {
             gameController.resetCharge();
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
+            Done_DestroyByContact script;
             foreach (var enemy in enemies)
             {
                 if (enemy.name != "Done_Bolt-Enemy")
                 {
-                    if (enemyExplosion != null)
+                    script = enemy.GetComponent<Done_DestroyByContact>();
+                    if (script != null)
                     {
-                        Instantiate(enemyExplosion, enemy.transform.position, enemy.transform.rotation);
-                    }
+                        if (script.explosion != null)
+                        {
+                            Instantiate(script.explosion, enemy.transform.position, enemy.transform.rotation);
+                        }
 
-                    gameController.AddScore(scoreValue);
-                    Destroy(enemy);
+                        if (script.playerExplosion != null)
+                        {
+                            Instantiate(script.playerExplosion, enemy.transform.position, enemy.transform.rotation);
+                        }
+
+                        gameController.AddScore(script.scoreValue);
+                        Destroy(enemy);
+                    }
                 }
             }
         }
