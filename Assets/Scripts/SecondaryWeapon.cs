@@ -8,6 +8,7 @@ public class SecondaryWeapon : MonoBehaviour {
     //public Button button;
         
     private Done_GameController gameController;
+    public GameObject nuke;
 
     // Use this for initialization
     void Start () {
@@ -35,9 +36,14 @@ public class SecondaryWeapon : MonoBehaviour {
             Done_DestroyByContact script;
             foreach (var enemy in enemies)
             {
+                GameObject player = GameObject.FindGameObjectWithTag("Player");
                 if (enemy.name != "Done_Bolt-Enemy")
                 {
                     script = enemy.GetComponent<Done_DestroyByContact>();
+                    if (nuke != null)
+                    {
+                        Instantiate(nuke, player.transform.position, player.transform.rotation);
+                    }
                     if (script != null)
                     {
                         if (script.explosion != null)
@@ -49,7 +55,6 @@ public class SecondaryWeapon : MonoBehaviour {
                         {
                             Instantiate(script.playerExplosion, enemy.transform.position, enemy.transform.rotation);
                         }
-
                         gameController.AddScore(script.scoreValue);
                         Destroy(enemy);
                     }
