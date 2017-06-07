@@ -22,6 +22,7 @@ public class Done_GameController : MonoBehaviour
     public Image ThirdBar;
     public Image FourthBar;
     public Image FifthBar;
+    public GameObject SecondaryWeaponBtn;
 
     private bool gameOver;
     private bool restart;
@@ -115,6 +116,7 @@ public class Done_GameController : MonoBehaviour
             ThirdBar.color = new Color(0, 0, 0, 0);
             FourthBar.color = new Color(0, 0, 0, 0);
             FifthBar.color = new Color(0, 0, 0, 0);
+            SecondaryWeaponBtn.SetActive(false);
         }
         else if (weaponCharge < 40)
         {
@@ -139,6 +141,7 @@ public class Done_GameController : MonoBehaviour
             ThirdBar.color = Color.red;
             FourthBar.color = Color.red;
             FifthBar.color = Color.red;
+            SecondaryWeaponBtn.SetActive(true);
         }
     }
 
@@ -177,5 +180,10 @@ public class Done_GameController : MonoBehaviour
     {
         weaponCharge = 0;
         updateChargeBar();
+    }
+
+    public bool isGameOver()
+    {
+        return gameOver;
     }
 }

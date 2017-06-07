@@ -31,16 +31,16 @@ public class Done_DestroyByContact : MonoBehaviour
 		if (explosion != null)
 		{
 			Instantiate(explosion, transform.position, transform.rotation);
-		}
+            gameController.addCharge(20);
+        }
 
-		if (other.tag == "Player")
+        if (other.tag == "Player")
 		{
 			Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
 			gameController.GameOver();
 		}
 		
 		gameController.AddScore(scoreValue);
-        gameController.addCharge(20);
 		Destroy (other.gameObject);
 		Destroy (gameObject);
 	}
