@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class SecondaryWeapon : MonoBehaviour {
 
     public Button button;
-    public GameObject explosion;
+    public GameObject enemyExplosion;
     public int scoreValue;
+        
     private Done_GameController gameController;
 
     // Use this for initialization
@@ -29,17 +30,24 @@ public class SecondaryWeapon : MonoBehaviour {
 
     void WipeEnemies()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        foreach(var enemy in enemies)
+        if (gameController.getCharge() >= 100)
         {
-            if (explosion != null)
-            {
-                Instantiate(explosion, enemy.transform.position, enemy.transform.rotation);
-            }
+            gameController.resetCharge();
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-            gameController.AddScore(scoreValue);
-            Destroy(enemy);
+            foreach (var enemy in enemies)
+            {
+                if (enemy.name != "Done_Bolt-Enemy")
+                {
+                    if (enemyExplosion != null)
+                    {
+                        Instantiate(enemyExplosion, enemy.transform.position, enemy.transform.rotation);
+                    }
+
+                    gameController.AddScore(scoreValue);
+                    Destroy(enemy);
+                }
+            }
         }
     }
 }
