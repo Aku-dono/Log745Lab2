@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114163695755596008}
   - component: {fileID: 114567545288051666}
   m_Layer: 5
-  m_Name: SecondaryWeaponCanvas
+  m_Name: SecondaryWeaponCanvas 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
