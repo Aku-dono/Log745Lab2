@@ -1737,6 +1737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d183f0856f687fd4c838a6a8f9ae6154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nuke: {fileID: 1805006575003692, guid: bf8db12a174649741b559851f773a309, type: 2}
 --- !u!1 &2039102634 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1234748639142128, guid: dfd12e4c414e25a44b969a2f6258ecf0,
