@@ -44,13 +44,13 @@ public class Done_PlayerController : MonoBehaviour
         if ((int)ConfigGlobal.InputMode == 0)
         {
             Vector3 accelerationRaw = Input.acceleration;
-            Vector3 acceleration = FixAcceleration(accelerationRaw);
-            movement = new Vector3(acceleration.x, 0.0f, acceleration.y);
+            Vector3 acceleration = FixAcceleration(accelerationRaw) * (float)ConfigGlobal.AccelDiplacementFactor;
+            movement.Set(acceleration.x, 0.0f, acceleration.y);
         }
         else if ((int)ConfigGlobal.InputMode == 1)
         {
             Vector2 direction = touchPad.GetDirection();
-            movement = new Vector3(direction.x, 0.0f, direction.y);
+            movement.Set(direction.x, 0.0f, direction.y);
         }
 
         GetComponent<Rigidbody>().velocity = movement * speed;

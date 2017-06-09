@@ -14,13 +14,11 @@ public class Done_GameController : MonoBehaviour
     public float startWait;
     public float waveWait;
 
-    //public Text scoreText;
-    //public Text restartText;
-    //public Text gameOverText;
-    public GameObject restartButton;
+    public GameObject gameUIPanel;
+    public GameObject gameOverPanel;
+    public GameObject movementZone;
     public Text scoreText;
-    //public Text restartText;
-    public Text gameOverText;
+    public Text finalScoreText;
 
     private bool gameOver;
     private bool restart;
@@ -39,13 +37,19 @@ public class Done_GameController : MonoBehaviour
     {
         gameOver = false;
         restart = false;
-        //restartText.text = "";
-        gameOverText.text = "";
-        restartButton.SetActive(false);
+        gameOverPanel.SetActive(false);
         score = 0;
         UpdateScore();
         updateChargeBar();
         StartCoroutine(SpawnWaves());
+        if((int)ConfigGlobal.InputMode == 0)
+        {
+            movementZone.SetActive(false);
+        }
+        else if ((int)ConfigGlobal.InputMode == 1)
+        {
+            movementZone.SetActive(true);
+        }
     }
 
     public void AddScore(int newScoreValue)
@@ -57,6 +61,7 @@ public class Done_GameController : MonoBehaviour
     void UpdateScore()
     {
         scoreText.text = "Score: " + score;
+        finalScoreText.text = "Final Score: " + score;
     }
 
 
@@ -67,13 +72,7 @@ public class Done_GameController : MonoBehaviour
 
     void Update()
     {
-        if (restart)
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                Application.LoadLevel(Application.loadedLevel);
-            }
-        }
+
     }
 
     IEnumerator SpawnWaves()
@@ -100,15 +99,6 @@ public class Done_GameController : MonoBehaviour
                 break;
         }
 
-        //TODO: switch the input mode to the correct version. 
-        switch (ConfigGlobal.InputMode)
-        {
-            case InputMode.Accelerometer:
-                break;
-            case InputMode.Touch:
-                break;
-        }
-
         yield return new WaitForSeconds(startWait);
         while (true)
         {
@@ -124,9 +114,6 @@ public class Done_GameController : MonoBehaviour
 
             if (gameOver)
             {
-                restartButton.SetActive(true);
-                //restartText.text = "Press 'R' for Restart";
-                restart = true;
                 break;
             }
         }
@@ -172,7 +159,8 @@ public class Done_GameController : MonoBehaviour
 
     public void GameOver()
     {
-        gameOverText.text = "Game Over!";
+        gameUIPanel.SetActive(false);
+        gameOverPanel.SetActive(true);
         gameOver = true;
     }
 
