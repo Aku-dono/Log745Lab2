@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Done/Done_Scenes/MainMenu.unity
+    guid: 27512f453430ac44db87734ee3b9eb1e
+  - enabled: 1
+    path: Assets/Done/Done_Scenes/Done_Main.unity
+    guid: 00000000000000000000000000000000
